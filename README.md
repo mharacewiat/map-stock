@@ -9,6 +9,8 @@ docker build -t map-stock .
 
 # Usage
 
+Execute the command from bellow and visit `http://localhost:80`.
+
 ```shell
-docker run -it --rm map-stock
+docker run -d -p 80:5000 map-stock
 ```
