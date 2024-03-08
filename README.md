@@ -1,6 +1,10 @@
 Map Stock
 =
 
+# Description
+
+This project is a solution to the [challenge](MapStock-challenge.pdf).
+
 # Installation
 
 ```shell
