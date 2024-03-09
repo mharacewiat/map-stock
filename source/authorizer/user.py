@@ -1,9 +1,19 @@
-from abc import ABCMeta, abstractclassmethod
 from source.model.user import User
+from injector import inject
+from source.repository.user import UserRepository
 
 
-class UserAuthorizer(metaclass=ABCMeta):
+class UserAuthorizer():
 
-    @abstractclassmethod
+    @inject
+    def __init__(self, user_repository: UserRepository) -> None:
+        self.user_repository = user_repository
+
     def authroize(self, username: str, password: str) -> User:
-        pass
+        user = self.user_repository.get_user(username)
+        
+        # TODO: hashing
+        if user.password != password:
+            raise Exception()
+        
+        return user
