@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 
-awslocal s3 mb s3://map-stock
+awslocal sqs create-queue \
+    --queue-name maps-uploaded
 
-SQS_QUEUE_URL=$(awslocal sqs create-queue --queue-name maps-uploaded | jq -r '.QueueUrl')
-SQS_QUEUE_ARN=$(awslocal sqs get-queue-attributes --attribute-names QueueArn --queue-url $SQS_QUEUE_URL | jq -r '.Attributes.QueueArn')
+awslocal dynamodb create-table \
+    --table-name users \
+    --billing-mode PAY_PER_REQUEST
+    --key-schema AttributeName=username,KeyType=HASH \
+    --attribute-definitions AttributeName=username,AttributeType=S
 
-awslocal s3api put-bucket-notification-configuration \
-    --bucket map-stock \
-    --notification-configuration '{
-        "QueueConfigurations": [
-            {
-                "Id": "MyS3EventNotification",
-                "Events": ["s3:ObjectCreated:*"],
-                "QueueArn": "'$SQS_QUEUE_ARN'"
-            }
-        ]
-    }'
+awslocal dynamodb create-table \
+    --table-name maps \
+    --billing-mode PAY_PER_REQUEST
+    --key-schema AttributeName=id,KeyType=HASH \
+    --attribute-definitions AttributeName=id,AttributeType=S

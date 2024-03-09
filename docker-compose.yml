@@ -8,19 +8,14 @@ services:
       - "80:5000"
     depends_on:
       - localstack
-    networks:
-      - map-stock
+    volumes:
+      - .:/app
 
   localstack:
     image: localstack/localstack
     ports:
       - "4566:4566"
     environment:
-      - SERVICES=dynamodb,lambda,s3,sqs
-    networks:
-      - map-stock
+      - SERVICES=dynamodb,sqs
     volumes:
       - ./localstack/ready.d:/etc/localstack/init/ready.d
-
-networks:
-  map-stock:
