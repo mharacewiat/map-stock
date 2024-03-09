@@ -21,7 +21,7 @@ class MapUploadHandler():
 
     def upload(self, file) -> Map:
         path = self.file_uploader.upload(file)
-        map = Map(path=path)
+        map = Map(id="XYZ", path=path)
 
         map = self.map_repository.save_map(map)
         self.message_gateway.notify(map)

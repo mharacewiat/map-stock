@@ -22,5 +22,5 @@ docker compose up -d
 # Testing
 
 ```shell
-docker compose exec -it app python -m unittest
+docker compose exec -it app python -m unittest discover
 ```

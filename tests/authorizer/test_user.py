@@ -37,5 +37,5 @@ class TestUserAuthorizer(TestCase):
         user_authorizer = UserAuthorizer(user_repository_mock)
         authorized_user = user_authorizer.authroize("foo", "bar")
 
-        user_repository_mock.get_user.assert_called_with("foo")
+        user_repository_mock.get_user.assert_called_once_with("foo")
         self.assertEqual(existing_user.username, authorized_user.username)
