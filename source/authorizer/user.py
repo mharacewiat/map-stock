@@ -13,7 +13,7 @@ class UserAuthorizer():
         user = self.user_repository.get_user(username)
         
         # TODO: hashing
-        if user.password != password:
+        if user == None or user.password != password:
             raise Exception()
         
         return user
