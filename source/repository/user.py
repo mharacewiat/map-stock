@@ -6,3 +6,6 @@ class UserRepository(metaclass=ABCMeta):
 
     def get_user(self, username: str) -> User:
         pass
+
+    def save_user(self, user: User) -> User:
+        pass

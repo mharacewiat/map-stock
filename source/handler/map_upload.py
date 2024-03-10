@@ -4,7 +4,6 @@ from source.model.map import Map
 from source.repository.map import MapRepository
 from source.uploader.file import FileUploader
 from injector import inject
-from flask import current_app
 
 
 class MapUploadHandler:

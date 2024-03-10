@@ -1,5 +1,6 @@
+bcrypt
+boto3
 Flask
-flask-dynamo
 Flask-Injector
+Flask-Pydantic
 Flask-JWT-Extended
-pydantic

@@ -14,7 +14,9 @@ class DynamoDbUserRepository(UserRepository):
         self.serializer = serializer
 
     def get_user(self, username: str) -> User:
-        response = self.client.get_item(TableName="users", Key={"id": {"S": id}})
+        response = self.client.get_item(
+            TableName="users", Key={"username": {"S": username}}
+        )
 
         if (
             response.get("ResponseMetadata").get("HTTPStatusCode") != 200

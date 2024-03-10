@@ -4,18 +4,20 @@ services:
   app:
     build:
       context: .
-    ports:
-      - "80:5000"
+    environment:
+      - CONFIG=config.py
     depends_on:
       - localstack
     volumes:
       - .:/app
+    network_mode: "host"        
 
   localstack:
     image: localstack/localstack
-    ports:
-      - "4566:4566"
     environment:
       - SERVICES=dynamodb,sqs
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./localstack/ready.d:/etc/localstack/init/ready.d
+    network_mode: "host"        
