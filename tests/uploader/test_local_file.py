@@ -10,7 +10,6 @@ class TestLocalFileUploader(TestCase):
         file_mock = Mock(spec=FileStorage)
         
         local_file_uploader = LocalFileUploader("/foo/bar/baz")
-        
         file_path = local_file_uploader.upload("qux", file_mock)
 
         self.assertEqual("/foo/bar/baz/qux", file_path)

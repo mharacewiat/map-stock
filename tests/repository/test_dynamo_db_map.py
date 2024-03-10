@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, Mock
+from uuid import UUID
 from source.model.map import Map
 from source.repository.dynamo_db_map import DynamoDbMapRepository
 from source.serializer.boto3 import Boto3Serializer
@@ -9,7 +10,7 @@ from boto3 import client
 class TestDynamoDbMapRepository(TestCase):
     
     def test_get_map(self):
-        id="123"
+        id=UUID("50b990c5-a322-491d-a2ee-d5b322d3b478")
         file_path="/foo/bar/baz"
         is_public=1
         is_processed=1
@@ -18,7 +19,7 @@ class TestDynamoDbMapRepository(TestCase):
             "is_processed": {"N": str(is_processed)}, 
             "is_public": {"N": str(is_public)}, 
             "file_path": {"S": file_path}, 
-            "id": {"S": id}
+            "id": {"S": str(id)}
         }
         
         client_mock = MagicMock()
@@ -74,12 +75,12 @@ class TestDynamoDbMapRepository(TestCase):
         serialiezer_mock.deserialize.assert_not_called()
     
     def test_save_map(self):
-        id="123"
         file_path="/foo/bar/baz"
         is_processed=0
         is_public=1
         
-        map = Map(id=id, file_path=file_path, is_processed=is_processed, is_public=is_public)
+        map = Map(file_path=file_path, is_processed=is_processed, is_public=is_public)
+        id = map.id
         
         client_mock = MagicMock()
         client_mock.update_item.return_value={
@@ -87,6 +88,7 @@ class TestDynamoDbMapRepository(TestCase):
                 "HTTPStatusCode": 200
             }
         }
+        
         
         serialiezer_mock = Mock(spec=Boto3Serializer)
         serialiezer_mock.serialize.return_value={
@@ -116,7 +118,7 @@ class TestDynamoDbMapRepository(TestCase):
         })
 
     def test_save_map_exception(self):
-        map = Map(id="123",file_path="/foo/bar/baz",is_processed=0,is_public=1)
+        map = Map(file_path="/foo/bar/baz",is_processed=0,is_public=1)
         
         client_mock = MagicMock()
         client_mock.update_item.return_value={

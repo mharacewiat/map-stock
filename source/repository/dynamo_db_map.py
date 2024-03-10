@@ -1,3 +1,4 @@
+from uuid import UUID
 from injector import inject, noninjectable
 from source.model.map import Map
 from source.repository.map import MapRepository
@@ -14,10 +15,10 @@ class DynamoDbMapRepository(MapRepository):
         self.client = client
         self.serializer = serializer
 
-    def get_map(self, id: str) -> Map:
+    def get_map(self, id: UUID) -> Map:
         response = self.client.get_item(
             TableName='maps',
-            Key={"id": {"S": id}}
+            Key={"id": {"S": str(id)}}
         )
         
         if response.get("ResponseMetadata").get("HTTPStatusCode") != 200 or not "Item" in response:
@@ -31,7 +32,7 @@ class DynamoDbMapRepository(MapRepository):
         
         response = self.client.update_item(
             TableName='maps',
-            Key={"id": {"S": map.id}},
+            Key={"id": {"S": str(map.id)}},
             UpdateExpression="SET file_path=:file_path, is_processed=:is_processed, is_public=:is_public",
             ExpressionAttributeValues=self.serializer.serialize(data)
         )

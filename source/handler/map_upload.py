@@ -1,8 +1,10 @@
+from werkzeug.datastructures import FileStorage
 from source.gateway.message import MessageGateway
 from source.model.map import Map
 from source.repository.map import MapRepository
 from source.uploader.file import FileUploader
 from injector import inject
+from flask import current_app
 
 
 class MapUploadHandler():
@@ -19,10 +21,11 @@ class MapUploadHandler():
         self.message_gateway = message_gateway
 
 
-    def upload(self, file) -> Map:
-        path = self.file_uploader.upload(file)
-        map = Map(id="XYZ", path=path)
-
+    def upload(self, file: FileStorage) -> Map:
+        map = Map(file_path="", is_processed=0, is_public=1)
+        file_path = self.file_uploader.upload(str(map.id), file)
+        map.file_path = file_path
+        
         map = self.map_repository.save_map(map)
         self.message_gateway.notify(map)
 
