@@ -5,8 +5,6 @@ Map Stock
 
 This project is a solution to the [challenge](MapStock-challenge.pdf). 
 
-I've decided to use NoSQL database.
-
 # Installation
 
 Execute the command from bellow. It will spin up the localstack resources and run the Flask app under `http://127.0.0.1:5000/`.
@@ -46,7 +44,7 @@ Take the `access_token` from the previous response and use it in `Authorization`
 
 ```shell
 curl --location 'http://127.0.0.1:5000/api/v1/maps' \
-    --header 'Authorization: Bearer xxx.yyy.zzz' \
+    --header 'Authorization: Bearer <access_tolen>' \
     --form 'file=@"/path/to/my/file.txt"'
 ```
 
@@ -65,9 +63,8 @@ docker compose exec app flask queue
 ## Download the map
 
 ```shell
-curl --location 'http://127.0.0.1:5000/api/v1/maps' \
-    --header 'Authorization: Bearer <access_tolen>' \
-    --form 'file=@"/path/to/my/file.txt"'
+curl --location 'http://127.0.0.1:5000/api/v1/maps/<id>' \
+    --header 'Authorization: Bearer <access_tolen>'
 ```
 
 > This endpoint is also available for guests. To act as a guest, simply remove `Authorization` header.
@@ -87,6 +84,7 @@ docker compose exec app python -m unittest discover
 - I decided to implement rough security layer. Ideally that would be a separate container acting as OAuth authorization server.
 - I didn't make it on time writing OpenApi/Swagger specs. They would be of course delivered in a regular project.
 - The error handling is awful. That would be a next thing to do. I know Flask allows to write a custom error handler.
+- I've decided to use NoSQL database, because instructions were not suggesting any requirement for relations. If there was a requirement for map editing (only by the user who uploaded it), or a user-scoped sharing... then maybe a relational db would a better choice.
 
 # Future Idea
 
