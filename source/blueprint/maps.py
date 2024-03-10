@@ -42,11 +42,15 @@ def post(user_repository: UserRepository, map_upload_handler: MapUploadHandler):
 def get(id: UUID, map_repository: MapRepository):
     map = map_repository.get_map(id)
 
+    if not map.is_processed:
+        current_app.logger.warning("Attempted to view not processed map")
+        return jsonify(error="The map is not processed"), 404
+        
     if not map.is_public:
         try:
             verify_jwt_in_request(fresh=True)
         except Exception:
             current_app.logger.warning("Attempted to view private map as guest")
-            return jsonify(error="The map is private"), 401
+            return jsonify(error="The map is private"), 404
 
     return send_file(map.file_path)

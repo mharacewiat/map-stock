@@ -32,4 +32,4 @@ class TestMapUploadHandler(TestCase):
 
         file_uploader_mock.upload.assert_called_once()
         map_repository_mock.save_map.assert_called_once()
-        message_gateway_mock.notify.assert_called_once_with(map)
+        message_gateway_mock.send.assert_called_once_with(map)

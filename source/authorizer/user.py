@@ -2,10 +2,9 @@ from typing import Tuple
 from source.model.user import User
 from injector import inject
 from source.repository.user import UserRepository
-from flask import current_app
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
-from bcrypt import hashpw, checkpw, gensalt
+from bcrypt import checkpw
 
 
 class UserAuthorizer:
@@ -17,7 +16,6 @@ class UserAuthorizer:
 
     def authorize(self, username: str, password: str) -> str:
         user = self.user_repository.get_user(username)
-        user.password = hashpw(password.encode(), gensalt()).decode()
 
         if not checkpw(password.encode(), user.password.encode()):
             raise Exception()

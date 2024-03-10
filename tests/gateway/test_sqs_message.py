@@ -18,7 +18,7 @@ class TestSqsMessageGateway(TestCase):
         )
 
         map = Map(file_path="/foo/bar/baz", is_processed=0, is_public=1)
-        sqs_message_gateway.notify(map)
+        sqs_message_gateway.send(map)
 
         client_mock.send_message.assert_called_once_with(
             QueueUrl=queue_url,

@@ -4,5 +4,8 @@ from source.model.map import Map
 
 class MessageGateway(metaclass=ABCMeta):
 
-    def notify(self, map: Map) -> None:
+    def send(self, map: Map) -> None:
+        pass
+
+    def receive(self) -> Map:
         pass

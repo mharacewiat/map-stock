@@ -30,14 +30,12 @@ class Container(Module):
             config = app_context.app.config
 
             session = Session(
-                region_name=config["AWS_REGION_NAME"], 
+                region_name=config["AWS_REGION_NAME"],
                 aws_access_key_id=config["AWS_ACCESS_KEY_ID"],
                 aws_secret_access_key=config["AWS_SECRET_ACCESS_KEY"],
             )
 
-            sqs_client = session.client(
-                "sqs", endpoint_url=config["AWS_ENDPOINT_URL"]
-            )
+            sqs_client = session.client("sqs", endpoint_url=config["AWS_ENDPOINT_URL"])
 
             binder.bind(
                 MessageGateway,
@@ -54,7 +52,7 @@ class Container(Module):
             binder.bind(
                 MapRepository,
                 DynamoDbMapRepository(
-                    client=dynamodb_client, 
+                    client=dynamodb_client,
                     serializer=binder.injector.create_object(Boto3Serializer),
                 ),
             )

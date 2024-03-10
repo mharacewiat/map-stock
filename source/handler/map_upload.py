@@ -25,6 +25,6 @@ class MapUploadHandler:
         map.file_path = file_path
 
         map = self.map_repository.save_map(map)
-        self.message_gateway.notify(map)
+        self.message_gateway.send(map)
 
         return map
