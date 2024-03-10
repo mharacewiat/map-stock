@@ -10,27 +10,21 @@ class TestBoto3Serializer(TestCase):
     def test_serialize(self):
         serializer_mock = Mock(spec=TypeSerializer)
         serializer_mock.serialize.return_value={"S":"bar"}
-        
         deserializer_mock = Mock(spec=TypeDeserializer)
-        
         boto3_serializer = Boto3Serializer(serializer=serializer_mock, deserializer=deserializer_mock)
         
         output = boto3_serializer.serialize({"foo":"bar"})
         
         self.assertEqual({"S": "bar"}, output.get("foo"))
-        
         deserializer_mock.deserialize.assert_not_called()
         
-    # def test_serialize(self):
-    #     serializer_mock = Mock(spec=TypeSerializer)
-    #     serializer_mock.serialize.return_value="bar"
+    def test_deserialize(self):
+        serializer_mock = Mock(spec=TypeSerializer)
+        deserializer_mock = Mock(spec=TypeDeserializer)
+        deserializer_mock.deserialize.return_value="bar"
+        boto3_serializer = Boto3Serializer(serializer=serializer_mock, deserializer=deserializer_mock)
         
-    #     deserializer_mock = Mock(spec=TypeDeserializer)
+        output = boto3_serializer.deserialize({"foo": {"S": "bar"}})
         
-    #     boto3_serializer = Boto3Serializer(serializer=serializer_mock, deserializer=deserializer_mock)
-        
-    #     output = boto3_serializer.deserialize({"S": "bar"})
-        
-    #     self.assertEqual("bar", output.get("foo"))
-        
-    #     serializer_mock.deserialize.assert_not_called()
+        self.assertEqual("bar", output.get("foo"))
+        serializer_mock.serialize.assert_not_called()
