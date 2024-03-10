@@ -19,6 +19,13 @@ from boto3.dynamodb.types import TypeDeserializer
 class Container(Module):
 
     def configure(self, binder):
+        """
+        Configure dependencies.
+
+        Args:
+            binder (_type_)
+        """
+        
         binder.bind(UserAuthorizer, UserAuthorizer)
         binder.bind(MapUploadHandler, MapUploadHandler)
         binder.bind(Boto3Serializer, Boto3Serializer)

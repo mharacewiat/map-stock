@@ -45,7 +45,7 @@ def get(id: UUID, map_repository: MapRepository):
     if not map.is_processed:
         current_app.logger.warning("Attempted to view not processed map")
         return jsonify(error="The map is not processed"), 404
-        
+
     if not map.is_public:
         try:
             verify_jwt_in_request(fresh=True)

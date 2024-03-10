@@ -20,6 +20,16 @@ class MapUploadHandler:
         self.message_gateway = message_gateway
 
     def upload(self, file: FileStorage) -> Map:
+        """
+        A serivce acting as upload orchestrator.
+
+        Args:
+            file (FileStorage): Source file
+
+        Returns:
+            Map: Resulting map object
+        """
+        
         map = Map(file_path="", is_processed=0, is_public=1)
         file_path = self.file_uploader.upload(str(map.id), file)
         map.file_path = file_path
