@@ -7,25 +7,24 @@ from injector import inject
 from flask import current_app
 
 
-class MapUploadHandler():
+class MapUploadHandler:
 
     @inject
     def __init__(
         self,
         file_uploader: FileUploader,
-        map_repository: MapRepository, 
-        message_gateway: MessageGateway
-    )-> None:
+        map_repository: MapRepository,
+        message_gateway: MessageGateway,
+    ) -> None:
         self.file_uploader = file_uploader
         self.map_repository = map_repository
         self.message_gateway = message_gateway
-
 
     def upload(self, file: FileStorage) -> Map:
         map = Map(file_path="", is_processed=0, is_public=1)
         file_path = self.file_uploader.upload(str(map.id), file)
         map.file_path = file_path
-        
+
         map = self.map_repository.save_map(map)
         self.message_gateway.notify(map)
 

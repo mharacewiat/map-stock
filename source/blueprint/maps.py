@@ -15,6 +15,7 @@ def post(map_upload_handler: MapUploadHandler, message_gateway: MessageGateway):
 
     return jsonify(map.model_dump())
 
+
 @bp.route("/<uuid:id>", methods=["GET"])
 @inject
 def get(id: UUID, map_repository: MapRepository):
@@ -24,5 +25,5 @@ def get(id: UUID, map_repository: MapRepository):
 
     if not map.is_public:
         raise Exception()
-    
+
     return jsonify(map.model_dump())

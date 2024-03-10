@@ -12,7 +12,7 @@ class SqsMessageGateway(MessageGateway):
     def __init__(self, queue_url: str, client: client):
         self.queue_url = queue_url
         self.client = client
-    
+
     def notify(self, map: Map) -> None:
         self.client.send_message(
             QueueUrl=self.queue_url,
